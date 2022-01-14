@@ -1,0 +1,196 @@
+:root {
+    --teema: #355a38;
+    --tausta: #ffffff;
+    --teksti: #000000;
+    --nappiteksti: #ffffff;
+}
+html {
+    height: 100%;
+    position: relative;
+}
+body {
+    margin: 0;
+    font-family: arial;
+    background: var(--tausta);
+    color: var(--teksti);
+    position: relative;
+    padding-bottom: 90px;
+}
+body#runko {
+    transition: padding 0.5s ease;
+}
+body.ilmoitus-tallennettu {
+    padding-top: 120px;
+}
+tr {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+td {
+    flex-basis: 100%;
+    background: #f5f5f5;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    align-items: center;
+}
+
+table#paalista {
+    width: 100%;
+    padding: 0 2.5%;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+tbody {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+td.pelaaja-profiili {
+    height: 80px;
+}
+td.pelaaja-profiili > img {
+    height: 80px;
+    width: 80px;
+}
+td.pelaaja {flex-basis: fit-content;}
+
+td > svg > path {fill: #438043;}
+
+td > svg {height: 40px !important;width: 40px !important;}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tiedot {
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 20px;
+    margin: 0 0 35px;
+}
+.tiedot-tyyppi {
+    flex-direction: row;
+}
+.tiedot-tyyppi div {
+    position: relative;
+    height: 50px;
+    flex-grow: 1;
+}
+.tiedot > label {
+    font-size: 18px;
+}
+.tiedot-tyyppi label {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    background: whitesmoke;
+}
+input {
+    font-size: 20px;
+    border: none;
+    height: 30px;
+    color: var(--teksti);
+    border-bottom: 2px solid;
+    padding: 0 0 10px;
+}
+input[type="radio"] {
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    visibility: hidden;
+    height: 100%;
+}
+input[type="radio"]:checked + label {
+    background: var(--teema);
+    color: var(--nappiteksti);
+}
+textarea:focus, input:focus{
+    outline: none;
+}
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 50px;
+    font-weight: 800;
+    background: url(tausta.jpg) no-repeat;
+    background-position: 2% 2%;
+    background-size: 105%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: #76767647;
+    max-width: 100vw;
+    margin: 0;
+    line-height: 50px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+a {
+    text-decoration: none;
+}
+button {
+    height: 80px;
+    position: fixed;
+    bottom: 0px;
+    width: 100vw;
+    margin: 50px 0 0;
+    background: var(--teema);;
+    outline: none;
+    font-size: 25px;
+    border: none;
+    color: var(--nappiteksti);
+}
+#ylalaatikko {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px;
+    height: 100px;
+}
+ul.pelaajat > li > img {
+    height: 50px;
+    width: 50px;
+}
+
+ul.pelaajat > li {
+    width: fit-content;
+    flex-grow: 0;
+}
+
+.pelaajalista {
+    margin: 20px 2.5%;
+    background: whitesmoke;
+    padding: 9px;
+}
+
+.pelaajalista h2 {
+    font-size: 20px;
+    margin: 0 0 5px;
+    color: #355a38;
+    font-weight: bold;
+}
+
+ul.pelaajat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+

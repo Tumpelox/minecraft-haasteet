@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="tyylit.css">
+    <script defer src="all.js"></script>
+    <meta name="theme-color" content="#ffffff">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <title>Minecraft haasteet</title>
+  </head>
+  <body id="runko">
+    <div id="ylalaatikko">
+      <h1>Minecraft haasteet
+      </h1>
+    </div>
+
+    <% try { if (palvelin["players"].length > 0) { %>
+    <div class="pelaajalista">
+      <h2>Palvelimella nyt</h2>
+      <ul class="pelaajat">
+        <% for (var i = 0; i < palvelin["players"].length; i++) {%>
+        <li>
+          <a href=<%- "/" +  palvelin["players"][i] + ".png" %> rev=<%- JSON.stringify(palvelin["players"][i]) %>><img src=<%- "https://mc-heads.net/avatar/" +  palvelin["players"][i] + ".png" %> height="50" width="50" alt=<%- JSON.stringify(palvelin["players"][i]) %>></a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+    <% } if (palvelin["players"].length == 0) { %>
+      <div class="pelaajalista">
+        <h2>Palvelin käynnissä</h2>
+      </div>
+    <% } } catch { %>
+      <div class="pelaajalista">
+        <h2 style="color: rgb(119, 21, 21)">Palvelin kiinni</h2>
+      </div>
+    <% } %>
+
+    <form autocomplete="off" id="valitsin">
+      <div class="tiedot tiedot-tyyppi">
+        <div>
+          <input class="valitsin" type="radio" id="yrittaja" name="tyyppi" value="B3:D" checked>
+          <label for="yrittaja">Yrittäjä</label>
+        </div>
+        <div>
+          <input class="valitsin" type="radio" id="elamantapa" name="tyyppi" value="E3:G">
+          <label for="elamantapa">Elämäntapa</label>
+        </div>
+        <div>
+          <input class="valitsin" type="radio" id="elaimet" name="tyyppi" value="H3:I">
+          <label for="elaimet">Eläimet</label>
+        </div>      
+        <div>
+          <input class="valitsin" type="radio" id="seikkailu" name="tyyppi" value="J3:L">
+          <label for="seikkailu">Seikkailu</label>
+        </div>
+        <div>
+          <input class="valitsin" type="radio" id="luovuus" name="tyyppi" value="M3:N">
+          <label for="luovuus">Luovuus</label>
+        </div>
+      </div>
+    </form>
+    <table id="paalista">
+    </table>
+    <script>
+    var tiedot = [];
+
+    var getJSON = function(url, callback) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.responseType = 'json';
+      xhr.onload = function() {
+        callback(xhr.response);
+      }
+      xhr.send();
+    };
+
+    function naytto(tyyppi, data) {
+      if (tyyppi == "yrittaja") {
+        var kohdat = [1,3]
+      } else if (tyyppi == "elamantapa") {
+        var kohdat = [4,6]
+      } else if (tyyppi == "elaimet") {
+        var kohdat = [7,8]
+      } else if (tyyppi == "seikkailu") {
+        var kohdat = [9,11]
+      } else if (tyyppi == "luovuus") {
+        var kohdat = [12,13]
+      } else {
+        console.log("Virhe")
+        return
+      }
+      var tableElement = document.getElementById("paalista");
+      tableElement.innerHTML = "";
+
+      var trElement = document.createElement("tr");
+      var tdElement = document.createElement("td");
+      tdElement.textContent = "Pelaaja";
+      tdElement.classList.add("pelaaja")
+      trElement.appendChild(tdElement);
+
+      for (var j = kohdat[0]; j <= kohdat[1]; j++) {
+        var tdElement = document.createElement("td");
+        tdElement.textContent = data[0][j]
+        trElement.appendChild(tdElement);
+      }
+      tableElement.appendChild(trElement);
+
+      for (var i = 1; i < data.length; i++) {
+        var trElement = document.createElement("tr");
+        var tdElement = document.createElement("td");
+
+        var paaLinkki = document.createElement("a");
+        paaLinkki.href = "/" + data[i][0];
+        paaLinkki.rev = data[i][0];
+
+        var paaElement = document.createElement("img");
+        paaElement.src = "https://mc-heads.net/avatar/" + data[i][0] + ".png";
+        paaElement.height = "50";
+        paaElement.width = "50";
+        paaElement.alt = data[i][0]
+        tdElement.classList.add("pelaaja")
+
+        paaLinkki.appendChild(paaElement);
+        tdElement.appendChild(paaLinkki);
+        trElement.appendChild(tdElement);
+        for (var j = kohdat[0]; j <= kohdat[1]; j++) {
+          var tdElement = document.createElement("td");
+          if (data[i][j] == "x") {
+            var sisaElement = document.createElement("i");
+            sisaElement.classList.add("fas")
+            sisaElement.classList.add("fa-check")
+            tdElement.appendChild(sisaElement)
+          }
+          trElement.appendChild(tdElement);
+        }
+        tableElement.appendChild(trElement);
+      }
+    }
+
+    function kyselija(tyyppi) {
+      getJSON("/tiedot", function(data) {
+        naytto(tyyppi, data);
+      });
+    }
+
+    function valitsija() {
+      var tyyppi = undefined;
+      for (var i = 0; i < 5; i++) {
+        if (document.getElementsByClassName("valitsin")[i].checked) {
+          tyyppi = document.getElementsByClassName("valitsin")[i].id
+        }
+      }
+
+      kyselija(tyyppi);
+    };
+
+    document.getElementById('valitsin').addEventListener('input',valitsija);
+    window.addEventListener("load", valitsija)
+    </script>
+  </body>
+</html>
